@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入jquery.js文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入easyui的js文件 -->
+    <script type="text/javascript" src="../js/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+    <!-- 引入easyui的中文js文件 -->
+    <script type="text/javascript" src="../js/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+
+    <!-- 引入easyui的css文件 -->
+    <link rel="stylesheet" href="../js/jquery-easyui-1.5/themes/default/easyui.css">
+    <!-- 引入easyui图标的css文件 -->
+    <link rel="stylesheet" href="../js/jquery-easyui-1.5/themes/icon.css">
+
+    <!-- 引入uploadify的css、js -->
+    <link type="text/css" rel="stylesheet" href="../js/uploadify/uploadify.css">
+    <script type="text/javascript" src="../js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'north',split:true,height:100">
+    <center>
+       <h2>便利店网上售卖系统</h2>
+    </center>
+    <div style="text-align: right;margin-right: 50px">
+        欢迎<span shiro:principal property="rolename"></span> : <span shiro:principal property="name"></span>  登录    <a href="../logout">注销</a>
+    </div>
+</div>
+<div data-options="region:'west',title:'菜单',split:true,width:200">
+    <ul id="mytree"></ul>
+</div>
+<div data-options="region:'center'">
+    <div id="mytabs" class="easyui-tabs" data-options="fit:true">
+        <div data-options="title:'首页'">
+            欢迎使用！！！
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        initTree();
+
+    })
+    function initTree(){
+        $("#mytree").tree({
+            url:"../user/findTree",
+            onClick:function(node){
+                if(node.url ==null || node.url==""){
+                    return;
+                }
+                var flag = $("#mytabs").tabs("exists",node.text);
+                if(flag){
+                    $("#mytabs").tabs("select",node.text);
+                }else{
+                    $("#mytabs").tabs("add",{
+                        title:node.text,
+                        closable:true,
+                        content:createPage(node.url),
+                        tools:[{
+                            iconCls:"icon-mini-refresh",
+                            handler:function(){
+                                var tab = $("#mytabs").tabs("getSelected");
+                                $("#mytabs").tabs("update",{
+                                    tab:tab,
+                                    options:{
+                                        content:createPage(node.url)
+                                    }
+                                });
+                            }
+                        }]
+                    });
+                }
+            }
+        });
+    }
+    //引入页面
+    function createPage(url){
+        return "<iframe style='width:100%;height:100%' frameborder='0' scrolling='auto' src='../"+url+"'></iframe>";
+    }
+</script>
+</html>

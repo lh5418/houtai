@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>腾飞在线教育后台管理系统</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--图标-->
+    <link rel="stylesheet" type="text/css" href="../js/css/font-awesome.min.css">
+
+    <!--布局框架-->
+    <link rel="stylesheet" type="text/css" href="../js/css/util.css">
+
+    <!--主要样式-->
+    <link rel="stylesheet" type="text/css" href="../js/css/main.css">
+    <script src="../js/jquery.min.js"></script>
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap3/css/bootstrap-theme.css">
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap3/js/bootstrap.min.js"></script>
+    <!-- bootstrap-table -->
+    <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap-table/bootstrap-table.js"></script>
+    <script  src="../js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <!-- 引入弹框的js文件 -->
+    <script src="../js/bootstrap-bootbox/bootbox.js"></script>
+    <!-- 引入日期得css和js文件 -->
+    <script src="../js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+    <!-- 引入上传文件的css和js文件 -->
+    <script src="../js/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="../js/bootstrap-fileinput/js/locales/zh.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap-fileinput/css/fileinput.css">
+</head>
+
+<body>
+
+<div class="login">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-pic js-tilt" data-tilt>
+                <img src="../js/img/img-01.png" alt="IMG">
+            </div>
+
+            <form  class=" ">
+				<span class="login100-form-title">
+					管理员登陆
+				</span>
+                <form id="myform">
+                <div class="wrap-input100 validate-input">
+                    <input class="input100" type="text" id="name" name="name" placeholder="用户名">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+						<i class="fa fa-envelope" aria-hidden="true"></i>
+					</span>
+                </div>
+
+                <div class="wrap-input100 validate-input">
+                    <input class="input100" type="password"  id="pwd" name="pwd" placeholder="密码">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+						<i class="fa fa-lock" aria-hidden="true"></i>
+					</span>
+                </div>
+                    <div class="container-login100-form-btn">
+                        <button class="btn btn-success btn-lg active" style="width: 130px;" onclick="javascript:denglu()"/>登陆
+                    </div>
+                    <div class="text-center p-t-12">
+
+                    </div>
+
+                    <div class="text-center p-t-136">
+                    </div>
+                </form>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function denglu() {
+        var name= $("#name").val();
+        var pwd= $("#pwd").val();
+        $.ajax({
+            url: '/user/login',//后台请求地址
+            type: 'post',
+           data: {name:name,pwd:pwd},//表单序列化
+           //data:$("#myform").serialize(),
+            success: function (data) {
+                alert(data);
+                if(data=="登录成功！！"){
+                    location.href="/page/tomain";
+                }
+            }
+        })
+    }
+</script>
+</html>

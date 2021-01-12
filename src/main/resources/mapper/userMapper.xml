@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.dao.UserDao">
+    <!--登录-->
+    <select id="findUserByName" resultType="com.jk.pojo.UserBean">
+        select * from t_user u left join t_user_role ur on u.id=ur.userid
+									left join t_role r on ur.roleid=r.roleid
+									where u.name=#{name}
+    </select>
+    <!--动态树-->
+    <select id="findTree" resultType="com.jk.pojo.TreeBean">
+         select * from t_tree p left join t_role_power rp on p.id=rp.powerid
+     left join t_user_role ur on rp.roleid=ur.roleid
+     where ur.userid=#{userid} and  p.pid =#{pid} and p.flag="menu"
+     group by p.id
+    </select>
+    <!--角色permission-->
+    <select id="findRolePower" resultType="string">
+       select r.premission from t_role r left join t_user_role ur on r.roleid=ur.roleid
+			where ur.userid=#{id} group by r.roleid
+    </select>
+    <!--权限permission-->
+    <select id="findPowerByUserid" resultType="string">
+       select u.permission from t_user_role ur left join t_role_power rp on ur.roleid=rp.roleid
+							left join t_tree u on rp.powerid=u.id
+			where ur.userid=#{id} and u.permission is not null and u.permission !=''  GROUP BY u.id
+    </select>
+    <!--用户表-->
+    <select id="initTable" resultType="com.jk.pojo.UserBean">
+        select u.*,GROUP_CONCAT(r.rolename) as rolename  from t_user u left join t_user_role ur on u.id=ur.userid
+						left join t_role r on ur.roleid=r.roleid group by u.id
+    </select>
+    <!--角色表-->
+    <select id="findRole" resultType="com.jk.pojo.RoleBean">
+        select * from t_role
+    </select>
+    <!--修改用戶-->
+    <update id="updateUser">
+        update t_user set name=#{name},pwd=#{pwd} where id=#{id}
+    </update>
+    <!--修改用戶密码-->
+    <update id="updateuserPwd">
+        update t_user set pwd=#{pwd} where id=#{id}
+    </update>
+    <!--刪除用戶角色-->
+    <delete id="delUserRoleByUserid">
+        delete from t_user_role where userid=#{id}
+    </delete>
+    <!--新增用戶-->
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user(name,pwd) values (#{name},#{pwd})
+    </insert>
+    <!--新增用戶角色-->
+    <insert id="addUserRole">
+        insert t_user_role(userid,roleid) values
+        <foreach collection="arr" item="roleid" separator=",">
+            (#{userid},#{roleid})
+        </foreach>
+    </insert>
+    <!--修改回显-->
+    <select id="queryUserById" resultType="com.jk.pojo.UserBean">
+        select u.*,GROUP_CONCAT(ur.roleid) roleid from t_user u left join t_user_role ur on u.id=ur.userid
+					where u.id=#{userid} group by u.id
+    </select>
+    <!--角色权限-->
+    <select id="findPowerByRoleid" resultType="com.jk.pojo.TreeBean">
+        select t.* from t_role r left join t_role_power rp on r.roleid=rp.roleid
+						left join t_tree t on rp.powerid=t.id where r.roleid=#{roleid}
+    </select>
+    <!--页面树查询-->
+    <select id="queryTreeByPid" parameterType="int" resultType="com.jk.pojo.TreeBean">
+		select t.id,t.text,t.pid,t.url from t_tree t where t.pid=#{pid}
+	</select>
+    <!-- 删除权限节点 -->
+    <delete id="deletePower" parameterType="int">
+		delete from u_tree where id=#{id}
+	</delete>
+    <!-- 修改权限节点 -->
+    <update id="updatePower"  parameterType="com.jk.pojo.TreeBean">
+		update t_tree set text=#{text} where id=#{id}
+	</update>
+    <!-- 根据pid查询子节点的id -->
+    <select id="findPowerByPid" parameterType="int" resultType="int">
+		select id from t_tree where pid=#{id}
+	</select>
+    <!-- 根据id的list批量删除权限节点 -->
+    <delete id="deletePowerAll" parameterType="int">
+        delete from t_tree where id in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 新增权限数据 -->
+    <insert id="savePower" parameterType="com.jk.pojo.TreeBean">
+		insert into t_tree(text,url,pid,permission,flag) values(#{text},#{url},#{pid},#{permission},#{flag})
+	</insert>
+    <!-- 批量新增角色权限中间表 -->
+    <insert id="saveRolePower">
+        insert into t_role_power(roleid,powerid) values
+        <foreach collection="powerids" item="powerid" separator=",">
+            (#{roleid},#{powerid})
+        </foreach>
+    </insert>
+    <!-- 根据roleid删除拥有的权限 -->
+    <delete id="delrpRoleid" parameterType="int">
+		delete from t_role_power where roleid=#{roleid}
+	</delete>
+    <!--删除用户-->
+    <delete id="delUser">
+        delete from t_user where id=#{id}
+    </delete>
+    <!--通过id查询用户-->
+    <select id="findUserById" resultType="com.jk.pojo.UserBean">
+        select * from t_user where id=#{id}
+    </select>
+</mapper>
