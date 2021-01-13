@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.dao.ShopDao">
+    <!--上架总条数  -->
+    <select id="findUpTotal" resultType="int">
+		select count(*) from t_shopping s left join t_type t on s.stypeid=t.stypeid
+		<include refid="nsql"/>
+	</select>
+    <select id="initShopTable" resultType="com.jk.pojo.ShopBean">
+		select * from t_shopping s left join t_type t on s.stypeid=t.stypeid
+                   <include refid="nsql"/>
+			limit #{start},#{rows}
+	</select>
+	<sql id="nsql">
+		<where>
+			s.status=1
+			<if test="shopBean.sname!=null and shopBean.sname!=''">
+				and s.sname like '%${shopBean.sname}%'
+			</if>
+			<if test="shopBean.stypeid!=null and shopBean.stypeid!=-1">
+				and s.stypeid = #{shopBean.stypeid}
+			</if>
+		</where>
+	</sql>
+    <!--下架总条数  -->
+    <select id="findDownTotal" resultType="int">
+		select count(*) from t_shopping s left join t_type t on s.stypeid=t.stypeid
+			<include refid="asql"/>
+	</select>
+    <select id="initdownShopTable" resultType="com.jk.pojo.ShopBean">
+		select * from t_shopping s left join t_type t on s.stypeid=t.stypeid
+                    <include refid="asql"/>
+			limit #{start},#{rows}
+	</select>
+	<sql id="asql">
+		<where>
+			s.status=2
+			<if test="shopBean.sname!=null and shopBean.sname!=''">
+				and s.sname like '%${shopBean.sname}%'
+			</if>
+			<if test="shopBean.stypeid!=null and shopBean.stypeid!=-1">
+				and s.stypeid = #{shopBean.stypeid}
+			</if>
+		</where>
+	</sql>	<!--删除商品-->
+	<delete id="deleteById" >
+		delete from t_shopping where id=#{id}
+	</delete>
+	<!--新增商品-->
+	<insert id="addShop" >
+		insert into t_shopping values (0,#{sname},#{stypeid},#{sprice},#{sinfo},#{sdate},#{sbaodate},#{simage},#{scount},0,1)
+	</insert>
+	<!--修改商品-->
+	<update id="updateShop">
+		update t_shopping set sname=#{sname},stypeid=#{stypeid},sprice=#{sprice},sinfo=#{sinfo},sdate=#{sdate},sbaodate=#{sbaodate},simage=#{simage},scount=#{scount} where id=#{id}
+	</update>
+	<!--下架-->
+	<update id="updateShopSatus">
+		update t_shopping set status=2 where id=#{id}
+	</update>
+	<!--上架-->
+	<update id="updateUpShopSatus">
+		update t_shopping set status=1 where id=#{id}
+	</update>
+	<!--id查询商品-->
+	<select id="findShopid" resultType="com.jk.pojo.ShopBean">
+		select * from t_shopping s left join t_type t on s.stypeid=t.stypeid
+                    where s.id=#{id}
+	</select>
+	<!--查询所有类型-->
+	<select id="findType" resultType="com.jk.pojo.TypeBean">
+		select  *  from t_type
+	</select>
+	<!--id查询类型-->
+	<select id="findTypeByid" resultType="com.jk.pojo.TypeBean">
+		select  *  from t_type where stypeid=#{id}
+	</select>
+	<!--新增类型-->
+	<insert id="addType">
+		insert into t_type values (0,#{stypename})
+	</insert>
+	<!--修改类型-->
+	<update id="updateType">
+		update t_type set stypename=#{stypename} where stypeid=#{stypeid}
+	</update>
+	<!--删除类型-->
+	<delete id="deltype">
+		delete from t_type where stypeid=#{id}
+	</delete>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.dao.OrderDao">
+    <!--上架总条数  -->
+    <select id="findWaitTotal" resultType="int">
+        select count(*) from t_myorder m left join t_type t on m.stypeid=t.stypeid
+        left join t_user u on m.userid=u.id
+        <include refid="nsql"/>
+    </select>
+    <select id="initWaiOrderTable" resultType="com.jk.pojo.OrderBean">
+        select * from t_myorder m left join t_type t on m.stypeid=t.stypeid
+        left join t_user u on m.userid=u.id
+        <include refid="nsql"/>
+        limit #{start},#{rows}
+    </select>
+    <sql id="nsql">
+        <where>
+            m.orderstataus=2
+            <if test="orderBean.sname!=null and orderBean.sname!=''">
+                and m.sname like '%${orderBean.sname}%'
+            </if>
+            <if test="orderBean.stypeid!=null and orderBean.stypeid!=-1">
+                and m.stypeid = #{orderBean.stypeid}
+            </if>
+        </where>
+    </sql>
+
+
+
+    <select id="findFinalTotal" resultType="int">
+        select count(*) from t_myorder m left join t_type t on m.stypeid=t.stypeid
+        left join t_user u on m.userid=u.id where m.orderstataus=3 or m.orderstataus=4
+    </select>
+    <select id="initFinalOrderTable" resultType="com.jk.pojo.OrderBean">
+        select * from t_myorder m left join t_type t on m.stypeid=t.stypeid
+        left join t_user u on m.userid=u.id where m.orderstataus=3 or m.orderstataus=4
+        limit #{start},#{rows}
+    </select>
+
+    <update id="updateOrderStatus">
+        update t_myorder set orderstataus=3 where id=#{id}
+    </update>
+</mapper>

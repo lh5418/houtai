@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入jquery.js文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入easyui的js文件 -->
+    <script type="text/javascript" src="../js/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+    <!-- 引入easyui的中文js文件 -->
+    <script type="text/javascript" src="../js/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+
+    <!-- 引入easyui的css文件 -->
+    <link rel="stylesheet" href="../js/jquery-easyui-1.5/themes/default/easyui.css">
+    <!-- 引入easyui图标的css文件 -->
+    <link rel="stylesheet" href="../js/jquery-easyui-1.5/themes/icon.css">
+
+    <!-- 引入uploadify的css、js -->
+    <link type="text/css" rel="stylesheet" href="../js/uploadify/uploadify.css">
+    <script type="text/javascript" src="../js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+商品名称：<input class="easyui-textbox" id="name">
+商品类型：<input id="type" class="easyui-combobox">
+<a class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="javascript:chaUser()">搜索</a>
+<table id="mytable"></table>
+</body>
+<script>
+    $(function () {
+        initTable();
+        initType();
+    })
+
+    //条查
+    function chaUser(){
+        $("#mytable").datagrid("load",{
+            sname:$("#name").textbox("getValue"),
+            stypeid:$("#type").textbox("getValue"),
+        });
+    }
+
+    function initType(){
+        $("#type").combobox({
+            url:"../shop/findType",
+            valueField:"stypeid",
+            textField:"stypename",
+        });
+    }
+    function initTable() {
+        $('#mytable').datagrid({
+            url: '/order/initWaiOrderTable',//获取数据地址
+            columns: [
+                [
+                    {field: 'id', title: '订单编号', width: 50},
+                    {field: 'sname', title: '商品名称', width: 80},
+                    {field: 'stypename', title: '商品类型', width: 80},
+                    {
+                        field: 'sprice', title: '商品单价', width: 80, formatter: function (value, row, index) {
+                            return value + "元";
+                        }
+                    },
+                    {
+                        field: "simage", title: "商品图片", width: 80, formatter: function (value, row, index) {
+                            return "<img width='50px' height='50px' src='<%=path%>/upload/" + value + "'>";
+                        }
+                    },
+                    {field: 'name', title: '购买人', width: 80},
+                    {field: 'ordernum', title: '订单数量', width: 80},
+                    {field: 'ordersum', title: '商品总价', width: 80, formatter: function (value, row, index) {
+                            return value + "元";
+                        }
+                    },
+                    {field: 'ordertime', title: '下单时间', width: 150},
+                    {
+                        field: 'caozuo', title: '状态', formatter: function (value, row, index) {
+                            var     str = "<a  href='javascript:updateOrderStatus(" + row.id + ")'>发货</a>";
+                            return str;
+                        }
+                    }
+                ]
+            ],
+            pagination: true,
+            pageSize: 5,
+            pageList: [1,2,3,4,5,6],
+            toolbar: "#mydiv"
+        });
+    }
+
+    function updateOrderStatus(id) {
+        $.messager.confirm("提示","是否确认发货？",function(r){
+            if(r){
+                $.ajax({
+                    url:"../order/updateOrderStatus",
+                    type:"post",
+                    data:{id:id},
+                    success:function(){
+                        $.messager.alert("我的消息","发货成功！！！","info");
+                        $('#mytable').datagrid("load");
+                    }
+                });
+            }
+        });
+    }
+</script>
+</html>

@@ -64,13 +64,9 @@
     </select>
     <!--角色权限-->
     <select id="findPowerByRoleid" resultType="com.jk.pojo.TreeBean">
-        select t.* from t_role r left join t_role_power rp on r.roleid=rp.roleid
-						left join t_tree t on rp.powerid=t.id where r.roleid=#{roleid}
+        select * from t_tree t left join t_role_power r on t.id=r.powerid  where r.roleid=#{roleid}
     </select>
-    <!--页面树查询-->
-    <select id="queryTreeByPid" parameterType="int" resultType="com.jk.pojo.TreeBean">
-		select t.id,t.text,t.pid,t.url from t_tree t where t.pid=#{pid}
-	</select>
+
     <!-- 删除权限节点 -->
     <delete id="deletePower" parameterType="int">
 		delete from u_tree where id=#{id}
@@ -113,4 +109,8 @@
     <select id="findUserById" resultType="com.jk.pojo.UserBean">
         select * from t_user where id=#{id}
     </select>
+    <!--页面树查询-->
+    <select id="queryTreeByPid" resultType="com.jk.pojo.TreeBean">
+		select * from t_tree  where pid= #{pid}
+	</select>
 </mapper>
