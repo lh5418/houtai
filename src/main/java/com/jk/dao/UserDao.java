@@ -16,7 +16,6 @@ import java.util.List;
  * @create: 2021-01-12 10:28
  */
 @Repository
-@Mapper
 public interface UserDao {
 
      UserBean findUserByName(String username) ;

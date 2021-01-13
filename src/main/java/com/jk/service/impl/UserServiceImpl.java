@@ -91,26 +91,6 @@ public class UserServiceImpl implements UserService {
         return list2;
     }
 
-    private List<TreeBean> queryPowerNodes(int pid, List<TreeBean> rolepowerlist) {
-        List<TreeBean> list = userDao.queryTreeByPid(pid);
-
-        for (TreeBean treeBean : list) {
-            Integer id = treeBean.getId();
-            //查询对应的子节点
-            List<TreeBean> nodes = queryPowerNodes(id,rolepowerlist);//递归：自己调自己
-            treeBean.setChildren(nodes);
-
-            //处理：给当前角色所拥有的权限  checked:true
-            for (TreeBean power : rolepowerlist) {
-                if(nodes.size()<=0&&power.getId()==id){//没有子节点
-                    treeBean.setChecked(true);
-                }
-            }
-
-        }
-        return list;
-    }
-
     @Override
     public void updatePower(TreeBean tree) {
         userDao.updatePower(tree);
@@ -173,6 +153,26 @@ public class UserServiceImpl implements UserService {
             Integer id2 = tree.getId();
             List<TreeBean> list2 = findNode(id2,id);
             tree.setChildren(list2);
+        }
+        return list;
+    }
+
+    private List<TreeBean> queryPowerNodes(int pid, List<TreeBean> rolepowerlist) {
+        List<TreeBean> list = userDao.queryTreeByPid(pid);
+
+        for (TreeBean treeBean : list) {
+            Integer id = treeBean.getId();
+            //查询对应的子节点
+            List<TreeBean> nodes = queryPowerNodes(id,rolepowerlist);//递归：自己调自己
+            treeBean.setChildren(nodes);
+
+            //处理：给当前角色所拥有的权限  checked:true
+            for (TreeBean power : rolepowerlist) {
+                if(nodes.size()<=0 && power.getId()==id){//没有子节点
+                    treeBean.setChecked(true);
+                }
+            }
+
         }
         return list;
     }

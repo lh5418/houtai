@@ -26,7 +26,7 @@ public class MyRealm  extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         UserBean user = (UserBean) principalCollection.getPrimaryPrincipal();
         UserService userService = SpringBeanFactoryUtils.getBean("userService", UserService.class);
-        List<String> list =userService.findPowerByUserid(user.getId());
+       List<String> list =userService.findPowerByUserid(user.getId());
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
          info.addStringPermissions(list);

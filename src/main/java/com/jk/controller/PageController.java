@@ -72,4 +72,63 @@ public class PageController {
     public String myshow(){
         return "myshow";
     }
+
+    /**
+     * @Author lh
+     * @Description  上架商品页面
+     * @Date 16:39 2021/1/12
+     * @Param []
+     * @return java.lang.String
+     **/
+    @RequestMapping("upshop")
+    public String upshop(){
+        return "upshop";
+    }
+    /**
+     * @Author lh 
+     * @Description  下架商品
+     * @Date 17:33 2021/1/12
+     * @Param []
+     * @return java.lang.String
+     **/
+    @RequestMapping("downshop")
+    public String downshop(){
+        return "downshop";
+    }
+    
+    /**
+     * @Author lh 
+     * @Description  类型
+     * @Date 19:48 2021/1/12
+     * @Param []
+     * @return java.lang.String
+     **/
+    @RequestMapping("type")
+    public String type(){
+        return "addtype";
+    }
+    
+    /**
+     * @Author lh 
+     * @Description  代发货页面
+     * @Date 9:59 2021/1/13
+     * @Param []
+     * @return java.lang.String
+     **/
+    @RequestMapping("waitOrder")
+    public String waitOrder(){
+        return "waitOrder";
+    }
+    
+    /**
+     * @Author lh 
+     * @Description  已完成订单
+     * @Date 10:20 2021/1/13
+     * @Param []
+     * @return java.lang.String
+     **/
+    @RequestMapping("finalOrder")
+    public String finalOrder(){
+        return "finalOrder";
+    }
 }

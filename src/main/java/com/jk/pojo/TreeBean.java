@@ -23,7 +23,6 @@ import java.util.List;
  * 修改备注：       
  * @version </pre>    
  */
-@Data
 public class TreeBean  {
 
     private Integer id;
@@ -35,5 +34,67 @@ public class TreeBean  {
     private Boolean checked;
     private List<TreeBean> children;
 
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
+    }
+
+    public List<TreeBean> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<TreeBean> children) {
+        this.children = children;
+    }
 }
