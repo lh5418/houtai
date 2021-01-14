@@ -2,12 +2,9 @@ package com.jk.controller;
 
 import com.jk.pojo.ShopBean;
 import com.jk.pojo.TypeBean;
-import com.jk.pojo.UserBean;
 import com.jk.service.ShopService;
-import com.jk.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,19 +51,6 @@ public class ShopController {
         return shopService.initdownShopTable(page,rows,shopBean);
     }
 
-    /**
-     * @Author lh 
-     * @Description  
-     * @Date 18:00 2021/1/12
-     * @Param [imgfile, request]
-     * @return java.lang.String
-     **/
-    @RequestMapping("uploadFile")
-    @ResponseBody
-    public String uploadFile(MultipartFile imgfile, HttpServletRequest request){
-
-        return FileUtil.uploadFile(imgfile, request);
-    }
 
     /**
      * @Author lh 

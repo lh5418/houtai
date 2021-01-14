@@ -47,7 +47,7 @@
 		delete from t_shopping where id=#{id}
 	</delete>
 	<!--新增商品-->
-	<insert id="addShop" >
+	<insert id="addShop"  useGeneratedKeys="true" keyProperty="id">
 		insert into t_shopping values (0,#{sname},#{stypeid},#{sprice},#{sinfo},#{sdate},#{sbaodate},#{simage},#{scount},0,1)
 	</insert>
 	<!--修改商品-->

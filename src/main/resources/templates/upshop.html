@@ -18,6 +18,31 @@
     <!-- 引入uploadify的css、js -->
     <link type="text/css" rel="stylesheet" href="../js/uploadify/uploadify.css">
     <script type="text/javascript" src="../js/uploadify/jquery.uploadify.min.js"></script>
+
+
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js//bootstrap3/css/bootstrap-theme.css">
+    <!-- 引入jquery文件 -->
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap3/js/bootstrap.min.js"></script>
+    <!-- bootstrap-table -->
+    <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap-table/bootstrap-table.js"></script>
+    <script  src="../js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <!-- 引入弹框的js文件 -->
+    <script src="../js/bootstrap-bootbox/bootbox.js"></script>
+    <!-- 引入日期得css和js文件 -->
+    <script src="../js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+    <!-- 引入上传文件的css和js文件 -->
+    <script src="../js/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="../js/bootstrap-fileinput/js/locales/zh.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap-fileinput/css/fileinput.css">
+
+
 </head>
 <body>
 <div id="mydiv">
@@ -26,53 +51,58 @@
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="javascript:chaUser()">搜索</a>
     <a  href="javascript:openAdd()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增商品</a>
 </div>
-<div id="userDialog" class="easyui-dialog" data-options="closed:true,width:500,height:400,modal:true,buttons:'#buttons'">
+<div id="userDialog" class="easyui-dialog" data-options="closed:true,width:800,height:600,modal:true,buttons:'#buttons'">
     <form id="userForm" method="post">
         <input name="id" style="display:none">
         <table>
+            <br>
             <tr>
                 <td>商品名称</td>
                 <td><input class="easyui-textbox" name="sname"></td>
             </tr>
+            <br>
             <tr>
                 <td>商品价格</td>
                 <td><input class="easyui-textbox" name="sprice"></td>
             </tr>
+            <br>
             <tr>
                 <td>商品描述</td>
                 <td><input class="easyui-textbox" name="sinfo"></td>
             </tr>
+            <br>
             <tr>
                 <td>商品出厂日期</td>
                 <td><input class="easyui-datebox" name="sdate"></td>
             </tr>
+            <br>
             <tr>
                 <td>商品保质期</td>
                 <td><input class="easyui-textbox" name="sbaodate"></td>
             </tr>
+            <br>
             <tr>
                 <td>商品库存</td>
                 <td><input class="easyui-textbox" name="scount"></td>
             </tr>
+            <br>
             <tr>
                 <td>商品类型</td>
                 <td>
                     <input class="easyui-combobox" name="stypeid" id="stypeid" data-options="width:180">
                 </td>
             </tr>
-            <tr>
-                <td>商品图片</td>
-                <td>
-                    <!-- 图片回显的img标签 -->
-                    <img id="add_img" width="100px" height="100px"/>
-                    <!-- 文件域 -->
-                    <input type="file" id="uploadImg"/>
-                    <!-- 隐藏域：用于向后台传值 -->
-                    <input style="display:none" id="hideImg" name="simage"/><br>
-                    <!-- 显示进度条的div -->
-                    <div id="fileQueue"></div>
-                </td>
-            </tr>
+            <br>
+            <div class="row">
+                <div class="col-md-2"><label>图片:</label></div>
+                <div class="col-md-5" >
+                    <!--隐藏域：往后台传值  -->
+                    <input type="text" id="testimg" style="display:none" name="simage"  /><!-- // -->
+                    <!-- projectfile -->
+                    <input type="file" multiple class="projectfile" accept="image/*" name="movieImg" id="userImg">
+                </div>
+            </div>
+            <br>
         </table>
     </form>
 </div>
@@ -174,13 +204,13 @@
                         if (value<30){
                             return value+"天";
                         }else if (value>=30 && value<=365 ){
-                            return value/30+"月";
+                            return Math.floor(value/30)+"月";
                         }else if (value>=365){
-                            return value/365+"年";
+                            return Math.floor(value/365)+"年";
                         }
                         }},
                     {field:"simage",title:"商品图片",width:80,formatter:function(value,row,index){
-                            return "<img width='50px' height='50px' src='<%=path%>/upload/"+value+"'>";
+                            return "<img src='"+value+"' width='50px' height='50px'>";
                         }},
                     {field: 'scount', title: '商品库存',width:80},
                     {field: 'ordernum', title: '订单量',width:80},
@@ -201,7 +231,7 @@
         });
 
     }
-    $("#uploadImg").uploadify({
+    /*$("#uploadImg").uploadify({
         //插件自带  不可忽略的参数flash插件
         'swf': '../js/uploadify/uploadify.swf',
         //前台请求后台的url 不可忽略的参数
@@ -237,7 +267,32 @@
             $('#hideImg').val(eval(data));
         }
 
-    });
+    });*/
+    uploadFile()
+    //上传文件
+    function uploadFile(){
+        $('#userImg').fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: '/img/uploadUserImg', //上传的地址
+            allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+            showUpload: true, //是否显示上传按钮
+            showCaption: false,//是否显示标题
+            browseClass: "btn btn-primary", //按钮样式
+            maxFileCount: 2, //表示允许同时上传的最大文件个数
+            enctype: 'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
 
+        }).on('fileuploaded', function(event, data, previewId, index) {
+            //var imgval = $('#testimg').val();
+            //if(imgval == null || imgval == "" || imgval == undefined){
+            var	imgval = data.response;
+            //}else{
+            //	imgval += ","+"http://<%= request.getServerName()%>:<%=request.getServerPort()%><%=request.getContextPath()%>/"+data.response;
+            //}
+            $('#testimg').val(imgval);
+        });
+    }
 </script>
 </html>

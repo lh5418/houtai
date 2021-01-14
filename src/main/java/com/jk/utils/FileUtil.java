@@ -1,9 +1,7 @@
-
 package com.jk.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,23 +9,30 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
-
 public class FileUtil {
-
-	//上传
-	public static String uploadFile(MultipartFile imgfile,HttpServletRequest request){
-    	//1、上传路径：项目发布tomcat服务器
-		//D:\workUtilsInstall\apache-tomcat-8.0.0\webapps\week_employee_hzy\\upload
-		String path = request.getServletContext().getRealPath("/")+"/img";
+	
+	private static final String url = "/upload";
+	
+	/**
+	 * 上传文件方法
+	 * @param file 上传的文件
+	 * @param request request对象
+	 * @return
+	 */
+	public static String FileUpload(MultipartFile file, HttpServletRequest request){
+		//保存文件的目标目录
+		String savePath = request.getServletContext().getRealPath("/")+url;
+//		String savePath = request.getSession().getServletContext().getRealPath(url);
 		
-		//2、文件
-		File file = new File(path);
-		if(!file.exists()){//不存在
-			file.mkdirs();
-		}
+		//获取源文件后缀名称
+		//12345.jpg
+		int suffixIndex = file.getOriginalFilename().lastIndexOf(".");
+		//  .jpg
+		String suffixName = file.getOriginalFilename().substring(suffixIndex);
 		
 		//生成新的文件名称，原因：防止文件名称一样后者上传的文件会覆盖前者上传的文件（前提是文件名称必须一样并且在用一个目录下）
 		//生成新的文件名称，保证文件名称唯一有两种方法：
@@ -36,90 +41,81 @@ public class FileUtil {
 		//  获取时间戳
 		//long currentTimeMillis = System.currentTimeMillis();
 		//System.out.println(currentTimeMillis);
-		String uuid = UUID.randomUUID().toString();
 		
-		String oldName = imgfile.getOriginalFilename();//1.jpg
-		//截取文件后缀:.jpg
-		String suffix = oldName.substring(oldName.lastIndexOf("."));
-		//新文件名
-		String newFile = uuid+suffix;
+		String newFileName = UUID.randomUUID().toString().replace("-", "") + suffixName;
 		
-		//3、上传
-		////D:\workUtilsInstall\apache-tomcat-8.0.0\webapps\week_employee_hzy\\upload\1.jpg
-		File file2 = new File(path+"\\"+newFile);
+		//检测目标目录是否存在
+		File targetFile = new File(savePath, newFileName);
+		if(!targetFile.exists()){
+			//创建目标目录
+			targetFile.mkdirs();
+		}
+		
 		try {
-			imgfile.transferTo(file2);
+			// 使用transferTo（dest）方法将上传文件写到服务器上指定的文件。
+			file.transferTo(targetFile);
 		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return newFile;		
+		savePath = url + "/" + newFileName;
+		return savePath;
 	}
 	
-	public static ResponseEntity<byte[]> downloadFile(String filename,HttpServletRequest request){
+	/**
+	 * 文件下载方法
+	 * @param fileName 文件名称
+	 * @param request request对象
+	 * @return
+	 */
+	public static ResponseEntity<byte[]> FileDownload(String fileName, HttpServletRequest request){
 
-		//1、获取要下载的文件:文件的完整地址
-		//D:\workUtilsInstall\apache-tomcat-8.0.0\webapps\ssm-demo-wdd\\upload\\1.jpg
-		String path = request.getServletContext().getRealPath("/")+"/img/"+filename;
+		ResponseEntity<byte[]> entity = null;
 		
-		//2、把下载的文件转换成字节数组
-		File file = new File(path);
-		byte[] byteArray = null;
-		HttpHeaders header = new HttpHeaders();
+		//获取源文件地址
+		String sourceUrl = request.getServletContext().getRealPath(fileName);
+		
+		//获取源文件
+		File sourceFile = new File(sourceUrl);
+		
+		//设置头部信息（文件信息包括文件名称和下载文件类型）
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentDispositionFormData("attachment", fileName.substring(7));
+		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		
+		//文件下载
 		try {
-			byteArray = FileUtils.readFileToByteArray(file);
-			//3、设置响应为文件下载：header设置
-			//name :设置 content-disposition 属性的值  inline
-			//filename:下载显示的文件名称
-			header.setContentDispositionFormData("attchment", URLEncoder.encode(filename, "utf-8"));
+			entity = new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(sourceFile), headers, HttpStatus.CREATED);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		
-		//4、下载：把文件输出/返回到浏览器
-		//参数一  body:下载的文件内容
-		//参数二 headers: 设置响应为文件下载
-		//参数参 请求的状态码  200 404 400 500
-		return new ResponseEntity<byte[]>(byteArray, header, HttpStatus.OK);		
+		return entity;
 	}
 	
-	//下载模板
-	public static ResponseEntity<byte[]> downloadFile2(String filename,HttpServletRequest request){
-		
-		//1、获取要下载的文件:文件的完整地址
-		//D:\workUtilsInstall\apache-tomcat-8.0.0\webapps\ssm-demo-wdd\\upload\\1.jpg
-		String path = request.getServletContext().getRealPath("/")+"/temp/"+filename;
-		
-		//2、把下载的文件转换成字节数组
-		File file = new File(path);
-		byte[] byteArray = null;
-		HttpHeaders header = new HttpHeaders();
-		try {
-			byteArray = FileUtils.readFileToByteArray(file);
-			//3、设置响应为文件下载：header设置
-			//name :设置 content-disposition 属性的值  inline
-			//filename:下载显示的文件名称
-			header.setContentDispositionFormData("attchment", URLEncoder.encode(filename, "utf-8"));
-		} catch (IOException e) {
-			e.printStackTrace();
+	/**
+	 * <pre>delFile(删除文件)   
+	 * 创建人：wdd    
+	 * 创建时间：2018年11月19日 下午1:01:20    
+	 * 修改人：wdd     
+	 * 修改时间：2018年11月19日 下午1:01:20    
+	 * 修改备注： 
+	 * @param filePath 文件路径数组
+	 * @param request</pre>
+	 */
+	public static void delFile(String[] filePath, HttpServletRequest request){
+		//获取tomcat目录
+		String pre = request.getServletContext().getRealPath("/")+url;
+		for (String  path: filePath) {
+			String suf = path.substring(path.lastIndexOf("/"));
+			String all = pre + suf;
+			File flie = new File(all);
+			flie.delete();
 		}
-		
-		
-		//4、下载：把文件输出/返回到浏览器
-		//参数一  body:下载的文件内容
-		//参数二 headers: 设置响应为文件下载
-		//参数参 请求的状态码  200 404 400 500
-		return new ResponseEntity<byte[]>(byteArray, header, HttpStatus.OK);		
 	}
-	//批量删除文件
-	public static void deleteFile(String[] paths, HttpServletRequest request){
-		String path = request.getServletContext().getRealPath("/")+"/upload/";
-		for (String imgpath : paths) {
-			//删除对应的文件
-			File file = new File(path+imgpath);
-			file.delete();
-		}		
-	}
+
 }
