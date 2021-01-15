@@ -1,6 +1,8 @@
 package com.jk.service;
 
+import com.jk.pojo.BrandBean;
 import com.jk.pojo.ShopBean;
+import com.jk.pojo.SizeBean;
 import com.jk.pojo.TypeBean;
 
 import java.util.HashMap;
@@ -14,8 +16,6 @@ import java.util.List;
  */
 public interface ShopService {
     HashMap<String, Object> initShopTable(Integer page, Integer rows, ShopBean shopBean);
-
-    HashMap<String, Object> initdownShopTable(Integer page, Integer rows, ShopBean shopBean);
 
     void deleteById(Integer id);
 
@@ -34,4 +34,12 @@ public interface ShopService {
     void addType(TypeBean typeBean);
 
     void deltype(Integer id);
+
+    List<BrandBean> findBrand();
+
+    HashMap<String, Object> initSizeTable(Integer id,Integer page, Integer rows, SizeBean sizeBean);
+
+    void addSize(SizeBean sizeBean);
+
+    SizeBean findShopSizeid(Integer id);
 }

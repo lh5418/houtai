@@ -1,6 +1,8 @@
 package com.jk.controller;
 
+import com.jk.pojo.BrandBean;
 import com.jk.pojo.ShopBean;
+import com.jk.pojo.SizeBean;
 import com.jk.pojo.TypeBean;
 import com.jk.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,15 +42,15 @@ public class ShopController {
 
     /**
      * @Author lh
-     * @Description  下架商品查询
+     * @Description  商品尺码查询
      * @Date 17:33 2021/1/12
      * @Param [page, rows, shopBean]
      * @return java.util.HashMap<java.lang.String,java.lang.Object>
      **/
-    @RequestMapping("initdownShopTable")
+    @RequestMapping("initSizeTable")
     @ResponseBody
-    public HashMap<String, Object> initdownShopTable(Integer page, Integer rows, ShopBean shopBean){
-        return shopService.initdownShopTable(page,rows,shopBean);
+    public HashMap<String, Object> initSizeTable(Integer id,Integer page, Integer rows,  SizeBean sizeBean){
+        return shopService.initSizeTable(id,page,rows,sizeBean);
     }
 
 
@@ -63,6 +65,18 @@ public class ShopController {
     @ResponseBody
     public void addShop(ShopBean shopBean){
         shopService.addShop(shopBean);
+    }
+    /**
+     * @Author lh
+     * @Description  新增尺码
+     * @Date 22:14 2021/1/14
+     * @Param [shopBean]
+     * @return void
+     **/
+    @RequestMapping("addSize")
+    @ResponseBody
+    public void addSize(SizeBean sizeBean){
+        shopService.addSize(sizeBean);
     }
     /**
      * @Author lh 
@@ -113,6 +127,19 @@ public class ShopController {
     public List<TypeBean> findType(){
        return shopService.findType();
     }
+
+    /**
+     * @Author lh
+     * @Description  查询品牌
+     * @Date 20:08 2021/1/14
+     * @Param []
+     * @return java.util.List<com.jk.pojo.TypeBean>
+     **/
+    @RequestMapping("findBrand")
+    @ResponseBody
+    public List<BrandBean> findBrand(){
+       return shopService.findBrand();
+    }
     /**
      * @Author lh 
      * @Description  修改回显
@@ -162,6 +189,21 @@ public class ShopController {
     @ResponseBody
     public void deltype(Integer id){
          shopService.deltype(id);
+    }
+
+
+    /**
+     * @Author lh 
+     * @Description  修改尺码
+     * @Date 9:29 2021/1/15
+     * @Param [id]
+     * @return com.jk.pojo.SizeBean
+     **/
+    @RequestMapping("findShopSizeid")
+    @ResponseBody
+    public SizeBean findShopSizeid(Integer id){
+        SizeBean sizeBean = shopService.findShopSizeid(id);
+        return sizeBean;
     }
 
 

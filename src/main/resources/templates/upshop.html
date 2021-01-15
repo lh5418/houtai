@@ -77,19 +77,16 @@
             </tr>
             <br>
             <tr>
-                <td>商品保质期</td>
-                <td><input class="easyui-textbox" name="sbaodate"></td>
-            </tr>
-            <br>
-            <tr>
-                <td>商品库存</td>
-                <td><input class="easyui-textbox" name="scount"></td>
-            </tr>
-            <br>
-            <tr>
                 <td>商品类型</td>
                 <td>
                     <input class="easyui-combobox" name="stypeid" id="stypeid" data-options="width:180">
+                </td>
+            </tr>
+            <br>
+            <tr>
+                <td>商品品牌</td>
+                <td>
+                    <input class="easyui-combobox" name="brandid" id="brandid" data-options="width:180">
                 </td>
             </tr>
             <br>
@@ -97,9 +94,61 @@
                 <div class="col-md-2"><label>图片:</label></div>
                 <div class="col-md-5" >
                     <!--隐藏域：往后台传值  -->
-                    <input type="text" id="testimg" style="display:none" name="simage"  /><!-- // -->
+                    <input type="text" id="testimg" style="display:none" name="simage"  />
                     <!-- projectfile -->
                     <input type="file" multiple class="projectfile" accept="image/*" name="movieImg" id="userImg">
+                </div>
+            </div>
+            <br>
+        </table>
+    </form>
+</div>
+<div id="shopDialog" class="easyui-dialog" data-options="closed:true,width:800,height:600,modal:true,buttons:'#button'">
+    <form id="shopForm" method="post">
+        <input name="id" style="display:none">
+        <table>
+            <br>
+            <tr>
+                <td>商品名称</td>
+                <td><input class="easyui-textbox" name="sname"></td>
+            </tr>
+            <br>
+            <tr>
+                <td>商品价格</td>
+                <td><input class="easyui-textbox" name="sprice"></td>
+            </tr>
+            <br>
+            <tr>
+                <td>商品描述</td>
+                <td><input class="easyui-textbox" name="sinfo"></td>
+            </tr>
+            <br>
+            <tr>
+                <td>商品出厂日期</td>
+                <td><input class="easyui-datebox" name="sdate"></td>
+            </tr>
+            <br>
+            <tr>
+                <td>商品类型</td>
+                <td>
+                    <input class="easyui-combobox" name="stypeid" id="stypeid2" data-options="width:180">
+                </td>
+            </tr>
+            <br>
+            <tr>
+                <td>商品品牌</td>
+                <td>
+                    <input class="easyui-combobox" name="brandid" id="brandid2" data-options="width:180">
+                </td>
+            </tr>
+            <br>
+            <div class="row">
+                <div class="col-md-2"><label>图片:</label></div>
+                <div class="col-md-5" >
+                    <!--隐藏域：往后台传值  -->
+                    <input type="text" id="testimg2" style="display:none" name="simage"  />
+                    <!-- projectfile -->
+                    <input type="file" multiple class="projectfile" accept="image/*" name="movieImg" id="userImg2">
                 </div>
             </div>
             <br>
@@ -110,6 +159,102 @@
 <div id="buttons">
     <a href="javascript:saveUser()" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true">确定</a>
     <a href="javascript:closeDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">取消</a>
+</div>
+<div id="button">
+    <a href="javascript:saveUser2()" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true">确定</a>
+    <a href="javascript:closeDialog2()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">取消</a>
+</div>
+<div id="sizeDialog" class="easyui-dialog" data-options="closed:true,width:800,height:600,modal:true">
+    <a  href="javascript:openAdd3()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增商品</a>
+    <table id="sizetable"></table>
+    <input id="sizeid">
+
+    <div id="sizeDialog3" class="easyui-dialog" data-options="closed:true,width:800,height:600,modal:true,buttons:'#sizebutton'">
+        <form id="sizeForm3" method="post">
+            <input name="sid" id="sid" style="display:none">
+            <table>
+                <br>
+                <tr>
+                    <td>商品尺码</td>
+                    <td><input class="easyui-textbox" name="size"></td>
+                </tr>
+                <br>
+                <tr>
+                    <td>商品颜色</td>
+                    <td><input class="easyui-textbox" name="color"></td>
+                </tr>
+                <br>
+                <tr>
+                    <td>尺码价格</td>
+                    <td><input class="easyui-textbox" name="xprice"></td>
+                </tr>
+                <br>
+                <tr>
+                    <td>商品数量</td>
+                    <td><input class="easyui-textbox" name="xcount"></td>
+                </tr>
+                <br>
+                <div class="row">
+                    <div class="col-md-2"><label>图片:</label></div>
+                    <div class="col-md-5" >
+                        <!--隐藏域：往后台传值  -->
+                        <input type="text" id="testimg3" style="display:none" name="ximg"  />
+                        <!-- projectfile -->
+                        <input type="file" multiple class="projectfile" accept="image/*" name="movieImg" id="userImg3">
+                    </div>
+                </div>
+                <br>
+            </table>
+        </form>
+    </div>
+    <!-- 定义对话框的按钮 -->
+    <div id="sizebutton">
+        <a href="javascript:saveSize()" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true">确定</a>
+        <a href="javascript:closeSizeDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">取消</a>
+    </div>
+    <div id="sizeDialog4" class="easyui-dialog" data-options="closed:true,width:800,height:600,modal:true,buttons:'#sizebuttons'">
+        <form id="sizeForm4" method="post">
+            <input name="sid" id="sid2" style="display:none">
+            <table>
+                <br>
+                <tr>
+                    <td>商品尺码</td>
+                    <td><input class="easyui-textbox" name="size"></td>
+                </tr>
+                <br>
+                <tr>
+                    <td>商品颜色</td>
+                    <td><input class="easyui-textbox" name="color"></td>
+                </tr>
+                <br>
+                <tr>
+                    <td>尺码价格</td>
+                    <td><input class="easyui-textbox" name="xprice"></td>
+                </tr>
+                <br>
+                <tr>
+                    <td>商品数量</td>
+                    <td><input class="easyui-textbox" name="xcount"></td>
+                </tr>
+                <br>
+                <div class="row">
+                    <div class="col-md-2"><label>图片:</label></div>
+                    <div class="col-md-5" >
+                        <!--隐藏域：往后台传值  -->
+                        <input type="text" id="testimg4" style="display:none" name="ximg"  />
+                        <!-- projectfile -->
+                        <input type="file" multiple class="projectfile" accept="image/*" name="movieImg" id="userImg4">
+                    </div>
+                </div>
+                <br>
+            </table>
+        </form>
+    </div>
+    <!-- 定义对话框的按钮 -->
+    <div id="sizebuttons">
+        <a href="javascript:saveSize2()" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true">确定</a>
+        <a href="javascript:closeSizeDialog2()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">取消</a>
+    </div>
 </div>
 
 
@@ -140,11 +285,45 @@
             }
         });
     }
+    function saveUser2(){
+        $("#shopForm").form("submit",{
+            url:"../shop/addShop",
+            success:function(){
+                //关闭弹框
+                closeDialog2();
+                //刷新表格
+                $('#mytable').datagrid("load");
+            }
+        });
+    }
+    //类型
     function initrole(){
         $("#stypeid").combobox({
             url:"../shop/findType",
             valueField:"stypeid",
             textField:"stypename",
+        });
+    }
+    function initrole2(){
+        $("#stypeid2").combobox({
+            url:"../shop/findType",
+            valueField:"stypeid",
+            textField:"stypename",
+        });
+    }
+    //品牌
+    function initBrand(){
+        $("#brandid").combobox({
+            url:"../shop/findBrand",
+            valueField:"brandid",
+            textField:"brandname",
+        });
+    }
+    function initBrand2(){
+        $("#brandid2").combobox({
+            url:"../shop/findBrand",
+            valueField:"brandid",
+            textField:"brandname",
         });
     }
 
@@ -156,7 +335,7 @@
             textField:"stypename",
         });
     }
-    //打开修改弹框：回显表单数据
+
     function updateShop(id){
         $.ajax({
             url:"../shop/updateShopSatus",
@@ -173,18 +352,78 @@
     function openAdd(){
         //清除表单缓存
         $("#userForm").form("reset");
+        $('#userImg').attr('src', "");
         initrole();//初始化角色下拉列表
+        initBrand();
+        uploadFile2();
         $("#userDialog").dialog({
             closed:false,
-            title:'新增商品'
+            title:'新增商品',
         });
 
     }
+
+    function updateShops(id) {
+        $.ajax({
+            url:"../shop/findShopid",
+            type:"post",
+            data:{id:id},
+            success:function(data){
+
+                //初始化角色下拉列表
+                initrole2();
+                initBrand2();
+                //回显表单数据
+                $("#shopForm").form("load",data);
+
+                $('#testimg2').attr('src', data.simage);
+                uploadFile(data.simage)
+                $("#shopDialog").dialog({
+                    closed:false,
+                    title:'修改商品'
+                });
+            }
+        })
+    }
+
+
+    //删除
+    function delshop(id) {
+        $.messager.confirm("提示","是否确认删除？",function(r){
+            if(r){
+                $.ajax({
+                    url:"../shop/deleteById",
+                    type:"post",
+                    data:{id:id},
+                    success:function(){
+                        $.messager.alert("我的消息","删除成功！！！","info");
+                        $('#mytable').datagrid("load");
+                    }
+                });
+            }
+        });
+    }
+
 
     //关闭新增弹框
     function closeDialog(){
         $("#userDialog").dialog("close");
     }
+    //关闭新增弹框
+    function closeDialog2(){
+        $("#shopDialog").dialog("close");
+    }
+    //关闭新增弹框
+    function closeSizeDialog(){
+        $("#sizeDialog3").dialog("close");
+    }
+    //关闭新增弹框
+    function closeSizeDialog2(){
+        $("#sizeDialog4").dialog("close");
+    }
+
+
+
 
     //初始化加载表格
     function initTable() {
@@ -196,19 +435,11 @@
                     {field: 'id', title: 'id',width:20},
                     {field: 'sname', title: '商品名称',width:80},
                     {field: 'stypename', title: '商品类型',width:80},
+                    {field: 'brandname', title: '商品品牌',width:80},
                     {field: 'sprice', title: '商品价格',width:80, formatter: function (value, row, index) {
                                 return value+"元";
                         }},
-                    {field: 'sdate', title: '商品出厂日期',width:150},
-                    {field: 'sbaodate', title: '商品保质期',width:80, formatter: function (value, row, index) {
-                        if (value<30){
-                            return value+"天";
-                        }else if (value>=30 && value<=365 ){
-                            return Math.floor(value/30)+"月";
-                        }else if (value>=365){
-                            return Math.floor(value/365)+"年";
-                        }
-                        }},
+                    {field: 'sdate', title: '上架日期',width:150},
                     {field:"simage",title:"商品图片",width:80,formatter:function(value,row,index){
                             return "<img src='"+value+"' width='50px' height='50px'>";
                         }},
@@ -218,7 +449,9 @@
                     {
                         field: 'caozuo', title: '操作', formatter: function (value, row, index) {
                             var str="";
-                            str+="<a  href='javascript:updateShop(" + row.id+")'>下架</a>";
+                            str += "<a  href='javascript:openadd2(" + row.id + ")'>查看版本</a> | ";
+                            str += "<a  href='javascript:updateShops(" + row.id + ")'>修改</a> | ";
+                            str += "<a  href='javascript:delshop(" + row.id + ")'>删除</a>";
                             return str;
                         }
                     }
@@ -231,46 +464,130 @@
         });
 
     }
-    /*$("#uploadImg").uploadify({
-        //插件自带  不可忽略的参数flash插件
-        'swf': '../js/uploadify/uploadify.swf',
-        //前台请求后台的url 不可忽略的参数
-        'uploader': '../shop/uploadFile',
-        //给div的进度条加背景 不可忽略
-        'queueID': 'fileQueue',
-        //上传文件文件名 跟file标签 name值 保持一致传参】
-        'fileObjName' : 'imgfile',
-        //给上传按钮设置文字
-        'buttonText': '上传头像',
-        //设置文件是否自动上传
-        'auto': true,
-        //可以同时选择多个文件 默认为true  不可忽略
-        'multi': true,
-        //上传后队列是否消失
-        'removeCompleted': true,
-        //允许上传的文件后缀
-        'fileExt': '*.jpg;*.gif;*.png',
-        //
-        'cancelImg': '../js/uploadify/uploadify-cancel.png',
-        //队列消失时间
-        'removeTimeout' : 1,
-        //上传文件的个数，项目中一共可以上传文件的个数
-        'uploadLimit':  -1,
-        'fileTypeExts': '*.jpg;*.png',
-        //成功回调函数 file：文件对象。data后台输出数据
-        'onUploadSuccess':function(file,data,response){
-            //alert(file.name+" 路径："+data.imagePath)
-            var imgurl = "../img/"+eval(data);
-            //图片回显， 预览
-            $("#add_img").attr("src",imgurl);
-            // 文本框 回填
-            $('#hideImg').val(eval(data));
-        }
 
-    });*/
-    uploadFile()
+    //初始化加载表格
+    function initSizeTable(id) {
+        $('#sizetable').datagrid({
+            url: '/shop/initSizeTable?id='+id,//获取数据地址
+            columns: [
+                [
+                    {field: 'id', title: 'id',width:20},
+                    {field: 'size', title: '尺码',width:80},
+                    {field: 'color', title: '颜色',width:80},
+                    {field:"ximg",title:"商品图片",width:80,formatter:function(value,row,index){
+                            return "<img src='"+value+"' width='50px' height='50px'>";
+                        }},
+                    {field: 'xprice', title: '商品价格',width:80},
+                    {field: 'xcount', title: '商品库存',width:80},
+                    {
+                        field: 'caozuo', title: '操作', formatter: function (value, row, index) {
+                            var str="";
+                            str += "<a  href='javascript:updateSizeShop(" + row.id + ")'>修改</a> | ";
+                            str += "<a  href='javascript:delSizeshop(" + row.id + ")'>删除</a>";
+                            return str;
+                        }
+                    }
+                ]
+            ],
+            pagination:true,
+            pageSize:8,
+            pageList:[8,10,16,22],
+            toolbar:"#sizediv"
+        });
+
+    }
+
+    function updateSizeShop(id) {
+        $.ajax({
+            url:"../shop/findShopSizeid",
+            type:"post",
+            data:{id:id},
+            success:function(data){
+
+                $("#sizeForm4").form("load",data);
+
+                $('#testimg4').attr('src', data.simage);
+                uploadFile(data.simage)
+                $("#shopDialog4").dialog({
+                    closed:false,
+                    title:'修改商品'
+                });
+            }
+        })
+    }
+
+
+    //删除尺码
+    function delSizeshop(id) {
+        $.messager.confirm("提示","是否确认删除？",function(r){
+            if(r){
+                $.ajax({
+                    url:"../shop/delSizeshop",
+                    type:"post",
+                    data:{id:id},
+                    success:function(){
+                        $.messager.alert("我的消息","删除成功！！！","info");
+                        $('#sizetable').datagrid("load");
+                    }
+                });
+            }
+        });
+    }
+
+
+    //保存尺码
+    function saveSize(){
+        $("#sizeForm3").form("submit",{
+            url:"../shop/addSize",
+            success:function(){
+                //关闭弹框
+                closeSizeDialog();
+                //刷新表格
+                $('#sizetable').datagrid("load");
+            }
+        });
+    }
+    //保存尺码
+    function saveSize2(){
+        $("#sizeForm4").form("submit",{
+            url:"../shop/addSize",
+            success:function(){
+                //关闭弹框
+                closeSizeDialog();
+                //刷新表格
+                $('#sizetable').datagrid("load");
+            }
+        });
+    }
+
+    //查看版本
+    function openadd2(id){
+        $("#sizeid").val(id);
+        $("#sizeForm").form("reset");
+        initSizeTable(id);
+        $("#sizeDialog").dialog({
+            closed:false,
+            title:'查看尺码',
+        });
+    }
+
+    //打开新增弹框
+    function openAdd3(){
+        //清除表单缓存
+        $("#sizeForm3").form("reset");
+        $('#userImg').attr('src', "");
+        uploadFile3();
+        var sizeid=$("#sizeid").val();
+        $("#sid").val(sizeid);
+        $("#sizeDialog3").dialog({
+            closed:false,
+            title:'新增尺码',
+        });
+
+    }
+
     //上传文件
-    function uploadFile(){
+    function uploadFile2(){
         $('#userImg').fileinput({
             language: 'zh', //设置语言
             uploadUrl: '/img/uploadUserImg', //上传的地址
@@ -292,6 +609,62 @@
             //	imgval += ","+"http://<%= request.getServerName()%>:<%=request.getServerPort()%><%=request.getContextPath()%>/"+data.response;
             //}
             $('#testimg').val(imgval);
+        });
+    }
+
+
+
+    function uploadFile(simage){
+        $('#userImg2').fileinput({
+            initialPreview:simage,
+            initialPreviewConfig: [
+                {key: 1, showDelete: false}
+            ],
+            initialPreviewAsData: true,
+            language: 'zh', //设置语言
+            uploadUrl: '/img/uploadUserImg', //上传的地址
+            allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+            showUpload: true, //是否显示上传按钮
+            showCaption: false,//是否显示标题
+            browseClass: "btn btn-primary", //按钮样式
+            maxFileCount: 2, //表示允许同时上传的最大文件个数
+            enctype: 'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+
+        }).on('fileuploaded', function(event, data, previewId, index) {
+            //var imgval = $('#testimg').val();
+            //if(imgval == null || imgval == "" || imgval == undefined){
+            var	imgval = data.response;
+            //}else{
+            //	imgval += ","+"http://<%= request.getServerName()%>:<%=request.getServerPort()%><%=request.getContextPath()%>/"+data.response;
+            //}
+            $('#testimg2').val(imgval);
+        });
+    }
+    function uploadFile3(){
+        $('#userImg3').fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: '/img/uploadUserImg', //上传的地址
+            allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+            showUpload: true, //是否显示上传按钮
+            showCaption: false,//是否显示标题
+            browseClass: "btn btn-primary", //按钮样式
+            maxFileCount: 2, //表示允许同时上传的最大文件个数
+            enctype: 'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+
+        }).on('fileuploaded', function(event, data, previewId, index) {
+            //var imgval = $('#testimg').val();
+            //if(imgval == null || imgval == "" || imgval == undefined){
+            var	imgval = data.response;
+            //}else{
+            //	imgval += ","+"http://<%= request.getServerName()%>:<%=request.getServerPort()%><%=request.getContextPath()%>/"+data.response;
+            //}
+            $('#testimg3').val(imgval);
         });
     }
 </script>

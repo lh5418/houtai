@@ -39,17 +39,19 @@ public class ShopBean {
   @Field(type = FieldType.Keyword)
     private String sdate;
   @Field(type = FieldType.Keyword)
-    private Integer sbaodate;
-  @Field(type = FieldType.Keyword)
     private String simage;
-  @Field(type = FieldType.Keyword)
+  @Transient
     private Integer scount;
-  @Field(type = FieldType.Keyword)
+  @Transient
     private Integer ordernum;
+  @Field(type = FieldType.Keyword)
+    private Integer brandid;
  @Transient
     private Integer status;
   @Field(type = FieldType.Text,analyzer = "ik_max_word")
     private String stypename;//类型
+  @Field(type = FieldType.Text,analyzer = "ik_max_word")
+    private String brandname;//类型
 
 
 

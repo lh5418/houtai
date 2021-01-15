@@ -1,6 +1,8 @@
 package com.jk.dao;
 
+import com.jk.pojo.BrandBean;
 import com.jk.pojo.ShopBean;
+import com.jk.pojo.SizeBean;
 import com.jk.pojo.TypeBean;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -45,4 +47,16 @@ public interface ShopDao {
     void updateType(TypeBean typeBean);
 
     void deltype(Integer id);
+
+    List<BrandBean> findBrand();
+
+    List<ShopBean> initSizeTable(@Param("id")Integer id, @Param("start")int start, @Param("rows")Integer rows, @Param("sizeBean") SizeBean sizeBean);
+
+    int findSizeTotal(@Param("id")Integer id, @Param("sizeBean") SizeBean sizeBean);
+
+    void addSize(SizeBean sizeBean);
+
+    void updateShopCount(@Param("count") Integer xcount, @Param("id") Integer sid);
+
+    SizeBean findShopSizeid(Integer id);
 }
