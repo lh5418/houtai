@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jk.dao.ShopDao">
-    <!--上架总条数  -->
+    <!--商品总条数  -->
     <select id="findUpTotal" resultType="int">
-		select count(*) from t_shopping s left join t_type t on s.stypeid=t.stypeid
+		select count(*) from t_shopping s left join t_type t on s.stypeid=t.stypeid left join t_brand b on s.brandid=b.brandid
 		<include refid="nsql"/>
 	</select>
     <select id="initShopTable" resultType="com.jk.pojo.ShopBean">
-		select * from t_shopping s left join t_type t on s.stypeid=t.stypeid
+		select * from t_shopping s left join t_type t on s.stypeid=t.stypeid left join t_brand b on s.brandid=b.brandid
                    <include refid="nsql"/>
 			limit #{start},#{rows}
 	</select>
 	<sql id="nsql">
 		<where>
-			s.status=1
 			<if test="shopBean.sname!=null and shopBean.sname!=''">
 				and s.sname like '%${shopBean.sname}%'
 			</if>
@@ -22,45 +21,29 @@
 			</if>
 		</where>
 	</sql>
-    <!--下架总条数  -->
-    <select id="findDownTotal" resultType="int">
-		select count(*) from t_shopping s left join t_type t on s.stypeid=t.stypeid
-			<include refid="asql"/>
+
+	<!--尺码总条数  -->
+	<select id="findSizeTotal" resultType="int">
+		select count(*) from t_size where sid=#{id}
 	</select>
-    <select id="initdownShopTable" resultType="com.jk.pojo.ShopBean">
-		select * from t_shopping s left join t_type t on s.stypeid=t.stypeid
-                    <include refid="asql"/>
-			limit #{start},#{rows}
+	<select id="initSizeTable" resultType="com.jk.pojo.SizeBean">
+		select * from t_size   where sid=#{id}
+		limit #{start},#{rows}
 	</select>
-	<sql id="asql">
-		<where>
-			s.status=2
-			<if test="shopBean.sname!=null and shopBean.sname!=''">
-				and s.sname like '%${shopBean.sname}%'
-			</if>
-			<if test="shopBean.stypeid!=null and shopBean.stypeid!=-1">
-				and s.stypeid = #{shopBean.stypeid}
-			</if>
-		</where>
-	</sql>	<!--删除商品-->
+	<select id="findShopSizeid" resultType="com.jk.pojo.SizeBean">
+		select * from t_size   where id=#{id}
+	</select>
+    <!--删除商品-->
 	<delete id="deleteById" >
 		delete from t_shopping where id=#{id}
 	</delete>
 	<!--新增商品-->
 	<insert id="addShop"  useGeneratedKeys="true" keyProperty="id">
-		insert into t_shopping values (0,#{sname},#{stypeid},#{sprice},#{sinfo},#{sdate},#{sbaodate},#{simage},#{scount},0,1)
+		insert into t_shopping values (0,#{sname},#{stypeid},#{sprice},#{sinfo},#{sdate},#{simage},0,0,1,#{brandid})
 	</insert>
 	<!--修改商品-->
 	<update id="updateShop">
-		update t_shopping set sname=#{sname},stypeid=#{stypeid},sprice=#{sprice},sinfo=#{sinfo},sdate=#{sdate},sbaodate=#{sbaodate},simage=#{simage},scount=#{scount} where id=#{id}
-	</update>
-	<!--下架-->
-	<update id="updateShopSatus">
-		update t_shopping set status=2 where id=#{id}
-	</update>
-	<!--上架-->
-	<update id="updateUpShopSatus">
-		update t_shopping set status=1 where id=#{id}
+		update t_shopping set sname=#{sname},stypeid=#{stypeid},sprice=#{sprice},sinfo=#{sinfo},sdate=#{sdate},simage=#{simage},brandid=#{brandid} where id=#{id}
 	</update>
 	<!--id查询商品-->
 	<select id="findShopid" resultType="com.jk.pojo.ShopBean">
@@ -71,6 +54,10 @@
 	<select id="findType" resultType="com.jk.pojo.TypeBean">
 		select  *  from t_type
 	</select>
+	<!--查询所有品牌-->
+	<select id="findBrand" resultType="com.jk.pojo.BrandBean">
+		select  *  from t_brand
+	</select>
 	<!--id查询类型-->
 	<select id="findTypeByid" resultType="com.jk.pojo.TypeBean">
 		select  *  from t_type where stypeid=#{id}
@@ -78,6 +65,10 @@
 	<!--新增类型-->
 	<insert id="addType">
 		insert into t_type values (0,#{stypename})
+	</insert>
+	<!--新增尺码-->
+	<insert id="addSize">
+		insert into t_size values (0,#{size},#{color},#{ximg},#{xprice},#{xcount},#{sid})
 	</insert>
 	<!--修改类型-->
 	<update id="updateType">
@@ -87,4 +78,8 @@
 	<delete id="deltype">
 		delete from t_type where stypeid=#{id}
 	</delete>
+	<!--修改库存数量-->
+	<update id="updateShopCount">
+		update t_shopping set scount=scount+#{count} where id=#{id}
+	</update>
 </mapper>
