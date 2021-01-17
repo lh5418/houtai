@@ -46,8 +46,12 @@
                         }
                     },
                     {field: 'name', title: '购买人', width: 80},
+                    {field: 'shopsize', title: '商品尺码', width: 80},
                     {field: 'ordernum', title: '订单数量', width: 80},
-                    {field: 'ordersum', title: '商品总价', width: 80},
+                    {field: 'ordersum', title: '商品总价', width: 80, formatter: function (value, row, index) {
+                            return value + "元";
+                        }
+                    },
                     {field: 'ordertime', title: '下单时间', width: 150},
                     {
                         field: 'caozuo', title: '状态', formatter: function (value, row, index) {

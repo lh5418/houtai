@@ -165,9 +165,9 @@
     <a href="javascript:closeDialog2()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">取消</a>
 </div>
 <div id="sizeDialog" class="easyui-dialog" data-options="closed:true,width:800,height:600,modal:true">
-    <a  href="javascript:openAdd3()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增商品</a>
+    <a  href="javascript:openAdd3()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增尺码</a>
     <table id="sizetable"></table>
-    <input id="sizeid">
+    <input id="sizeid" style="display: none">
 
     <div id="sizeDialog3" class="easyui-dialog" data-options="closed:true,width:800,height:600,modal:true,buttons:'#sizebutton'">
         <form id="sizeForm3" method="post">
@@ -215,6 +215,7 @@
     <div id="sizeDialog4" class="easyui-dialog" data-options="closed:true,width:800,height:600,modal:true,buttons:'#sizebuttons'">
         <form id="sizeForm4" method="post">
             <input name="sid" id="sid2" style="display:none">
+            <input name="id"  style="display:none">
             <table>
                 <br>
                 <tr>
@@ -483,7 +484,7 @@
                         field: 'caozuo', title: '操作', formatter: function (value, row, index) {
                             var str="";
                             str += "<a  href='javascript:updateSizeShop(" + row.id + ")'>修改</a> | ";
-                            str += "<a  href='javascript:delSizeshop(" + row.id + ")'>删除</a>";
+                            str += "<a  href='javascript:delSizeshop(" + row.id + ","+row.xcount+")'>删除</a>";
                             return str;
                         }
                     }
@@ -504,13 +505,15 @@
             data:{id:id},
             success:function(data){
 
+                var sizeid=$("#sizeid").val();
+                $("#sid2").val(sizeid);
                 $("#sizeForm4").form("load",data);
 
-                $('#testimg4').attr('src', data.simage);
-                uploadFile(data.simage)
-                $("#shopDialog4").dialog({
+                $('#testimg4').attr('src', data.ximg);
+                uploadFile4(data.ximg)
+                $("#sizeDialog4").dialog({
                     closed:false,
-                    title:'修改商品'
+                    title:'修改尺码'
                 });
             }
         })
@@ -518,16 +521,18 @@
 
 
     //删除尺码
-    function delSizeshop(id) {
+    function delSizeshop(id,count) {
+        var sid=$("#sid2").val();
         $.messager.confirm("提示","是否确认删除？",function(r){
             if(r){
                 $.ajax({
                     url:"../shop/delSizeshop",
                     type:"post",
-                    data:{id:id},
+                    data:{id:id,count:count,sid:sid},
                     success:function(){
                         $.messager.alert("我的消息","删除成功！！！","info");
                         $('#sizetable').datagrid("load");
+                        $('#mytable').datagrid("load");
                     }
                 });
             }
@@ -553,7 +558,7 @@
             url:"../shop/addSize",
             success:function(){
                 //关闭弹框
-                closeSizeDialog();
+                closeSizeDialog2();
                 //刷新表格
                 $('#sizetable').datagrid("load");
             }
@@ -575,7 +580,7 @@
     function openAdd3(){
         //清除表单缓存
         $("#sizeForm3").form("reset");
-        $('#userImg').attr('src', "");
+        $('#userImg3').attr('src', "");
         uploadFile3();
         var sizeid=$("#sizeid").val();
         $("#sid").val(sizeid);
@@ -641,6 +646,35 @@
             //	imgval += ","+"http://<%= request.getServerName()%>:<%=request.getServerPort()%><%=request.getContextPath()%>/"+data.response;
             //}
             $('#testimg2').val(imgval);
+        });
+    }
+    function uploadFile4(simage){
+        $('#userImg4').fileinput({
+            initialPreview:simage,
+            initialPreviewConfig: [
+                {key: 1, showDelete: false}
+            ],
+            initialPreviewAsData: true,
+            language: 'zh', //设置语言
+            uploadUrl: '/img/uploadUserImg', //上传的地址
+            allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+            showUpload: true, //是否显示上传按钮
+            showCaption: false,//是否显示标题
+            browseClass: "btn btn-primary", //按钮样式
+            maxFileCount: 2, //表示允许同时上传的最大文件个数
+            enctype: 'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+
+        }).on('fileuploaded', function(event, data, previewId, index) {
+            //var imgval = $('#testimg').val();
+            //if(imgval == null || imgval == "" || imgval == undefined){
+            var	imgval = data.response;
+            //}else{
+            //	imgval += ","+"http://<%= request.getServerName()%>:<%=request.getServerPort()%><%=request.getContextPath()%>/"+data.response;
+            //}
+            $('#testimg4').val(imgval);
         });
     }
     function uploadFile3(){
