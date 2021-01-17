@@ -78,8 +78,46 @@
 	<delete id="deltype">
 		delete from t_type where stypeid=#{id}
 	</delete>
+	<!--删除尺码-->
+	<delete id="delSizeshop">
+		delete from t_size where id=#{id}
+	</delete>
 	<!--修改库存数量-->
 	<update id="updateShopCount">
 		update t_shopping set scount=scount+#{count} where id=#{id}
 	</update>
+	<!--修改总库存数量-->
+	<update id="updateShopCount2">
+		update t_shopping set scount=scount-#{ycount}+#{xcount} where id=#{id}
+	</update>
+	<!--减掉尺码库存数量-->
+	<update id="updateShopCountjian">
+		update t_shopping set scount=scount-#{count} where id=#{id}
+	</update>
+	<!--删除商品尺码关联表-->
+	<delete id="delteSize">
+		delete from t_size where sid=#{id}
+	</delete>
+	<!--修改尺码-->
+	<update id="updateSize">
+		update t_size set size=#{size},color=#{color},ximg=#{ximg},xprice=#{xprice},xcount=#{xcount}  where id=#{id}
+	</update>
+
+
+    <!--品牌修改回显-->
+    <select id="findBrandByid" resultType="com.jk.pojo.BrandBean">
+        select * from t_brand where brandid=#{id}
+    </select>
+    <!--新增品牌-->
+    <insert id="addBrand">
+        insert into t_brand values(0,#{brandname})
+    </insert>
+    <!--修改品牌-->
+    <update id="updateBrand">
+		update t_brand set brandname=#{brandname} where brandid=#{brandid}
+	</update>
+    <!--删除品牌-->
+    <delete id="delBrand">
+		delete from t_brand where brandid=#{id}
+	</delete>
 </mapper>

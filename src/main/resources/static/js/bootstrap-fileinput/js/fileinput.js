@@ -1657,7 +1657,7 @@
                 },
                 url: self.uploadUrl,
                 type: 'POST',
-                dataType: 'json',
+                //dataType: 'json',
                 data: self.formdata,
                 cache: false,
                 processData: false,

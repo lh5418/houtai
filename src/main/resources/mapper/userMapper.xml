@@ -28,7 +28,9 @@
     <!--用户表-->
     <select id="initTable" resultType="com.jk.pojo.UserBean">
         select u.*,GROUP_CONCAT(r.rolename) as rolename  from t_user u left join t_user_role ur on u.id=ur.userid
-						left join t_role r on ur.roleid=r.roleid group by u.id
+						left join t_role r on ur.roleid=r.roleid
+						where r.premission='admin'
+						group by u.id
     </select>
     <!--角色表-->
     <select id="findRole" resultType="com.jk.pojo.RoleBean">
