@@ -131,4 +131,16 @@ public class PageController {
     public String finalOrder(){
         return "finalOrder";
     }
+    
+    /**
+     * @Author lh 
+     * @Description  品牌页面
+     * @Date 18:13 2021/1/17
+     * @Param []
+     * @return java.lang.String
+     **/
+    @RequestMapping("brand")
+    public String brand(){
+        return "brand";
+    }
 }

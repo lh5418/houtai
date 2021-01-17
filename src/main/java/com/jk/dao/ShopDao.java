@@ -59,4 +59,22 @@ public interface ShopDao {
     void updateShopCount(@Param("count") Integer xcount, @Param("id") Integer sid);
 
     SizeBean findShopSizeid(Integer id);
+
+    void updateShopCountjian(@Param("count")Integer count, @Param("id")Integer sid);
+
+    void delSizeshop(Integer id);
+
+    void delteSize(Integer id);
+
+    void updateShopCount2(@Param("ycount") Integer xcount, @Param("xcount") Integer xcount1, @Param("id") Integer sid);
+
+    void updateSize(SizeBean sizeBean);
+
+    BrandBean findBrandByid(Integer id);
+
+    void addBrand(BrandBean brandBean);
+
+    void updateBrand(BrandBean brandBean);
+
+    void delBrand(Integer id);
 }

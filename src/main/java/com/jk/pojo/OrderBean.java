@@ -20,6 +20,7 @@ public class OrderBean {
     private String ordertime;
     private String simage;
     private Integer orderstataus;
+    private Integer shopsize;
 
 
     private String stypename;

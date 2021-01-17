@@ -205,6 +205,59 @@ public class ShopController {
         SizeBean sizeBean = shopService.findShopSizeid(id);
         return sizeBean;
     }
+    /**
+     * @Author lh
+     * @Description  删除尺码
+     * @Date 16:06 2021/1/15
+     * @Param [id, count]
+     * @return void
+     **/
+    @RequestMapping("delSizeshop")
+    @ResponseBody
+    public void delSizeshop(Integer id,Integer count,Integer sid){
+        shopService.delSizeshop(id,count,sid);
+    }
 
 
+
+    /**
+     * @Author lh
+     * @Description  修改回显
+     * @Date 18:14 2021/1/17
+     * @Param [id]
+     * @return com.jk.pojo.TypeBean
+     **/
+    @RequestMapping("findBrandByid")
+    @ResponseBody
+    public BrandBean findBrandByid(Integer id){
+        BrandBean brand = shopService.findBrandByid(id);
+        return brand;
+    }
+
+    /**
+     * @Author lh
+     * @Description  新增品牌
+     * @Date 18:14 2021/1/17
+     * @Param [typeBean]
+     * @return void
+     **/
+    @RequestMapping("addBrand")
+    @ResponseBody
+    public void addBrand(BrandBean brandBean){
+        shopService.addBrand(brandBean);
+    }
+
+    /**
+     * @Author lh 
+     * @Description  删除品牌
+     * @Date 18:14 2021/1/17
+     * @Param [id]
+     * @return void
+     **/
+    @RequestMapping("delBrand")
+    @ResponseBody
+    public void delBrand(Integer id){
+        shopService.delBrand(id);
+    }
+    
 }

@@ -41,6 +41,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public void deleteById(Integer id) {
         shopDao.deleteById(id);
+        shopDao.delteSize(id);
         esDao.deleteById(id);
     }
 
@@ -87,7 +88,6 @@ public class ShopServiceImpl implements ShopService {
             shopDao.addType(typeBean);
         }else {
             shopDao.updateType(typeBean);
-
         }
     }
 
@@ -114,12 +114,44 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public void addSize(SizeBean sizeBean) {
-        shopDao.addSize(sizeBean);
-        shopDao.updateShopCount(sizeBean.getXcount(),sizeBean.getSid());
+        if (sizeBean.getId()==null){
+            shopDao.addSize(sizeBean);
+            shopDao.updateShopCount(sizeBean.getXcount(),sizeBean.getSid());
+        }else {
+            SizeBean sizeBean1=shopDao.findShopSizeid(sizeBean.getId());
+            shopDao.updateShopCount2(sizeBean1.getXcount(),sizeBean.getXcount(),sizeBean.getSid());
+            shopDao.updateSize(sizeBean);
+        }
+
     }
 
     @Override
     public SizeBean findShopSizeid(Integer id) {
         return shopDao.findShopSizeid(id);
+    }
+
+    @Override
+    public void delSizeshop(Integer id, Integer count,Integer sid) {
+        shopDao.delSizeshop(id);
+        shopDao.updateShopCountjian(count,sid);
+    }
+
+    @Override
+    public BrandBean findBrandByid(Integer id) {
+        return shopDao.findBrandByid(id);
+    }
+
+    @Override
+    public void addBrand(BrandBean brandBean) {
+        if (brandBean.getBrandid()==null){
+            shopDao.addBrand(brandBean);
+        }else {
+            shopDao.updateBrand(brandBean);
+        }
+    }
+
+    @Override
+    public void delBrand(Integer id) {
+        shopDao.delBrand(id);
     }
 }

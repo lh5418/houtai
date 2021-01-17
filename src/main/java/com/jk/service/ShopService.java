@@ -42,4 +42,12 @@ public interface ShopService {
     void addSize(SizeBean sizeBean);
 
     SizeBean findShopSizeid(Integer id);
+
+    void delSizeshop(Integer id, Integer count,Integer sid);
+
+    BrandBean findBrandByid(Integer id);
+
+    void addBrand(BrandBean brandBean);
+
+    void delBrand(Integer id);
 }
